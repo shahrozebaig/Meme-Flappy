@@ -6,14 +6,6 @@ Play the classic Flappy Bird gameplay with hilarious Indian meme characters and 
 
 ---
 
-## 🌐 Deployment Link
-
-   “Press Play to Begin Your Meme Adventure!”
-
-https://meme-flappy.onrender.com
-
----
-
 ## 🗺️ Architecture Diagram
 
 
