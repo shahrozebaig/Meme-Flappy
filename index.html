@@ -1,0 +1,92 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Meme Flappy Bird</title>
+  <link rel="stylesheet" href="style.css" />
+</head>
+<body>
+  <div id="ui">
+
+    <div id="header">
+      <img id="logo" src="assets/ui/logo.png" alt="logo"/>
+      <div id="score">0</div>
+
+      <!-- ⭐ HIGH SCORE ADDED -->
+      <div id="highScore" style="
+          color:white;
+          font-size:20px;
+          font-weight:700;
+          margin-left:10px;
+          text-shadow:0 0 8px rgba(0,0,0,.6);
+      ">Best: 0</div>
+    </div>
+
+    <canvas id="gameCanvas"></canvas>
+
+    <!-- ⭐ SHOP PANEL WITH FIXED WIDTH + TABS -->
+    <div id="shopPanel" class="panel shop-panel hidden">
+      <h3>Shop</h3>
+      <div id="coinsDisplay">Coins: 0</div>
+
+      <!-- ⭐ TABS -->
+      <div class="shop-tabs">
+        <button id="tabCharacters" class="shop-tab active">Characters</button>
+        <button id="tabThemes" class="shop-tab">Themes</button>
+      </div>
+
+      <!-- ⭐ CHARACTERS GRID -->
+      <div id="shopCharactersGrid" class="grid"></div>
+
+      <!-- ⭐ THEMES GRID -->
+      <div id="shopThemesGrid" class="grid hidden"></div>
+
+      <button id="closeShop">Close</button>
+    </div>
+
+    <!-- ⭐ THEME PANEL -->
+    <div id="themePanel" class="panel hidden">
+      <h3>Choose Theme</h3>
+      <div id="themeGrid" class="grid"></div>
+      <button id="closeThemeBtn">Close</button>
+    </div>
+
+    <!-- ⭐ CHARACTER PANEL -->
+    <div id="charPanel" class="panel hidden">
+      <h3>Choose Character</h3>
+      <div id="charGrid" class="grid"></div>
+      <button id="closeCharBtn">Close</button>
+    </div>
+
+    <!-- ⭐ GAME OVER -->
+    <div id="gameOverPanel" class="panel hidden">
+      <h2>Game Over</h2>
+
+      <div>Score: <span id="finalScore">0</span></div>
+
+      <!-- ⭐ BEST SCORE ADDED -->
+      <div>Best Score: <span id="finalBestScore">0</span></div>
+
+      <button id="retryBtn">Retry</button>
+    </div>
+
+    <!-- ⭐ NAVIGATION -->
+    <nav class="nav-bar">
+      <button id="navPlay" class="nav-btn">🎮<div class="nav-label">Play</div></button>
+      <button id="navShop" class="nav-btn">🛒<div class="nav-label">Shop</div></button>
+      <button id="navTheme" class="nav-btn">🎨<div class="nav-label">Theme</div></button>
+      <button id="navChar" class="nav-btn">😎<div class="nav-label">Character</div></button>
+      <button id="navMusic" class="nav-btn">🔊<div class="nav-label">Music</div></button>
+    </nav>
+
+  </div>
+
+  <script src="character.js"></script>
+  <script src="theme.js"></script>
+  <script src="audio.js"></script>
+  <script src="shop.js"></script>
+  <script src="game.js"></script>
+  <script src="script.js"></script>
+</body>
+</html>
