@@ -35,8 +35,8 @@ const CHARACTERS = [
   { id:'bua lipa', name:'Bua Lipa', img:'assets/characters/bua lipa.png' },
   { id:'chiti', name:'Chitti', img:'assets/characters/chiti.png' },
   { id:'kajol', name:'Kajol', img:'assets/characters/kajol.png' },
-  { id:'kim jethalal', name:'Kim Jethalal', img:'assets/characters/kim jethalal.png' },
-  { id:'  Rajpal Yadav', name:'Rajpal Yadav', img:'assets/characters/Rajpal Yadav.png' },
+  { id:'Kim jethalal', name:'Kim Jethalal', img:'assets/characters/Kim jethalal.png' },
+  { id:'Rajpal Yadav', name:'Rajpal Yadav', img:'assets/characters/Rajpal Yadav.png' },
   { id:'sharuk', name:'Sharuk', img:'assets/characters/sharuk.png' }
 ];
 
