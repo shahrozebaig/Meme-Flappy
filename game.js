@@ -1,8 +1,8 @@
 const OBSTACLE_SOURCES = [
-  "assets/obstacles/golgappa.png",
-  "assets/obstacles/traffic_pole.png",
-  "assets/obstacles/rickshaw.png",
-  "assets/obstacles/jcb_arm.png"
+  "assets/obstacles/nora.png",
+  "assets/obstacles/disha.png",
+  "assets/obstacles/sam.png",
+  "assets/obstacles/tammu.png"
 ];
 
 const OBSTACLE_IMAGES = OBSTACLE_SOURCES.map(src=>{
