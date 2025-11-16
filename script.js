@@ -6,8 +6,11 @@ const game = new Game(canvas);
 
 /* ⭐ HIGH SCORE ADDITION */
 const highScoreEl = document.getElementById('highScore');
+const finalBestScoreEl = document.getElementById('finalBestScore'); // ⭐ ADDED
 let bestScore = parseInt(localStorage.getItem("bestScore") || "0");
+
 if (highScoreEl) highScoreEl.textContent = "Best: " + bestScore;
+if (finalBestScoreEl) finalBestScoreEl.textContent = bestScore; // ⭐ ADDED
 
 /* SHOP ELEMENTS */
 const shopPanel = document.getElementById('shopPanel');
@@ -432,6 +435,8 @@ function loopUI() {
       if (highScoreEl) highScoreEl.textContent = "Best: " + bestScore;
     }
 
+    if (finalBestScoreEl) finalBestScoreEl.textContent = bestScore; // ⭐ ADDED
+
     gameOverPanel.classList.remove('hidden');
     return;
   }
@@ -458,6 +463,8 @@ game.onGameOver = () => {
     localStorage.setItem("bestScore", bestScore);
   }
 
+  if (finalBestScoreEl) finalBestScoreEl.textContent = bestScore; // ⭐ ADDED
+
   gameOverPanel.classList.remove('hidden');
 };
 
@@ -467,5 +474,6 @@ populateThemePanel();
 refreshShopCharacters();
 
 if (highScoreEl) highScoreEl.textContent = "Best: " + bestScore;
+if (finalBestScoreEl) finalBestScoreEl.textContent = bestScore; // ⭐ ADDED
 
 window.g = game;
