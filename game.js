@@ -55,7 +55,7 @@ class Game{
   flap(){
     if(!this.alive) return;
     this.vy=this.lift;
-    playJump();
+    // playJump();  <-- removed
   }
 
   update(){
@@ -161,13 +161,9 @@ class Game{
     ctx.stroke();
   }
 
-  /* =====================================================
-      ⭐ CLEAN, SAFE PIPE GLOW LOGIC
-     ===================================================== */
   applyPipeBorder(x, y, w, h) {
     const ctx = this.ctx;
 
-    // reset styles
     ctx.shadowBlur = 0;
     ctx.shadowColor = "transparent";
 
@@ -197,7 +193,6 @@ class Game{
 
     ctx.strokeRect(x, y, w, h);
 
-    // Reset shadow after stroke
     ctx.shadowBlur = 0;
   }
 
@@ -205,7 +200,6 @@ class Game{
     this.w=this.canvas.width=window.innerWidth;
     this.h=this.canvas.height=window.innerHeight;
 
-    // draw background
     const bg=this.theme._img;
     if(bg.complete){
       const rCanvas=this.w/this.h;
@@ -220,12 +214,10 @@ class Game{
 
       this.ctx.drawImage(bg, x,y,w,h);
 
-      // dark overlay
       this.ctx.fillStyle = "rgba(0,0,0,0.35)";
       this.ctx.fillRect(0,0,this.w,this.h);
     }
 
-    // draw pipes + outline
     for(const p of this.pipes){
       const img=OBSTACLE_IMAGES[p.obsIndex];
 
@@ -239,7 +231,6 @@ class Game{
         this.ctx.fillRect(p.x,p.yBottom,p.w,p.hBottom);
       }
 
-      // ⭐ Draw glow outline cleanly
       this.applyPipeBorder(p.x, 0, p.w, p.hTop);
       this.applyPipeBorder(p.x, p.yBottom, p.w, p.hBottom);
     }
