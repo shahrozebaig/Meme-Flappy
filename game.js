@@ -43,8 +43,11 @@ class Game{
     this.reset();
     this.alive=true;
 
-    this.character=CHARACTERS.find(c=>c.id===characterId);
-    this.theme=THEMES.find(t=>t.id===themeId);
+    this.character = CHARACTERS.find(c=>c.id===characterId);
+    this.theme = THEMES.find(t=>t.id===themeId);
+
+    // ⭐ get rarity for pipe glow effect
+    this.charRarity = RARITY[this.character.id] || "common";
 
     requestAnimationFrame(()=>this.loop());
   }
@@ -158,11 +161,51 @@ class Game{
     ctx.stroke();
   }
 
+  /* =====================================================
+      ⭐ CLEAN, SAFE PIPE GLOW LOGIC
+     ===================================================== */
+  applyPipeBorder(x, y, w, h) {
+    const ctx = this.ctx;
+
+    // reset styles
+    ctx.shadowBlur = 0;
+    ctx.shadowColor = "transparent";
+
+    if (this.charRarity === "common") {
+      ctx.strokeStyle = "black";
+      ctx.lineWidth = 3;
+    }
+
+    else if (this.charRarity === "rare") {
+      ctx.lineWidth = 4;
+      ctx.strokeStyle = "#4aa3ff";
+    }
+
+    else if (this.charRarity === "epic") {
+      ctx.lineWidth = 5;
+      ctx.strokeStyle = "#d400ff";
+      ctx.shadowColor = "#ff00ff";
+      ctx.shadowBlur = 15;
+    }
+
+    else if (this.charRarity === "legendary") {
+      ctx.lineWidth = 6;
+      ctx.strokeStyle = "#ffcc00";
+      ctx.shadowColor = "#ffdd55";
+      ctx.shadowBlur = 25;
+    }
+
+    ctx.strokeRect(x, y, w, h);
+
+    // Reset shadow after stroke
+    ctx.shadowBlur = 0;
+  }
+
   draw(){
     this.w=this.canvas.width=window.innerWidth;
     this.h=this.canvas.height=window.innerHeight;
 
-    // BG cover
+    // draw background
     const bg=this.theme._img;
     if(bg.complete){
       const rCanvas=this.w/this.h;
@@ -176,22 +219,29 @@ class Game{
       }
 
       this.ctx.drawImage(bg, x,y,w,h);
-    } else {
-      this.ctx.fillStyle="#d6f0ff";
+
+      // dark overlay
+      this.ctx.fillStyle = "rgba(0,0,0,0.35)";
       this.ctx.fillRect(0,0,this.w,this.h);
     }
 
+    // draw pipes + outline
     for(const p of this.pipes){
       const img=OBSTACLE_IMAGES[p.obsIndex];
 
       if(img.complete){
         this.ctx.drawImage(img, p.x, 0, p.w, p.hTop);
         this.ctx.drawImage(img, p.x, p.yBottom, p.w, p.hBottom);
+
       } else {
         this.ctx.fillStyle="#2d3748";
         this.ctx.fillRect(p.x,0,p.w,p.hTop);
         this.ctx.fillRect(p.x,p.yBottom,p.w,p.hBottom);
       }
+
+      // ⭐ Draw glow outline cleanly
+      this.applyPipeBorder(p.x, 0, p.w, p.hTop);
+      this.applyPipeBorder(p.x, p.yBottom, p.w, p.hBottom);
     }
 
     this.drawCharacter();
