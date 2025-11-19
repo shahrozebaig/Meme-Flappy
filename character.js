@@ -2,13 +2,12 @@ const CHAR_RARITY = {
   raju: "common",
   moye: "common",
   carry: "rare",
-
   bramha: "legendary",
   "bua lipa": "rare",
   chiti: "epic",
   kajol: "common",
-  "kim jethalal": "epic",
-  "  Rajpal Yadav": "rare",
+  jethalal: "epic",
+  "Rajpal Yadav": "rare",
   sharuk: "legendary"
 };
 
@@ -16,13 +15,12 @@ const CHAR_PRICE = {
   raju: 0,
   moye: 1000,
   carry: 3000,
-
-  bramha: 4500,
+  bramha: 10000,
   "bua lipa": 5500,
   chiti: 6000,
-  kajol: 6500,
-  "kim jethalal": 8500,
-  "  Rajpal Yadav": 9000,
+  kajol: 3500,
+  jethalal: 8500,
+  "Rajpal Yadav": 6500,
   sharuk: 9500
 };
 
@@ -30,7 +28,6 @@ const CHARACTERS = [
   { id:'raju', name:'Raju', img:'assets/characters/raju.png' },
   { id:'moye', name:'Moye', img:'assets/characters/moye_moye.png' },
   { id:'carry', name:'Carry', img:'assets/characters/carry.png' },
-
   { id:'bramha', name:'Brahma', img:'assets/characters/bramha.png' },
   { id:'bua lipa', name:'Bua Lipa', img:'assets/characters/bua lipa.png' },
   { id:'chiti', name:'Chitti', img:'assets/characters/chiti.png' },
