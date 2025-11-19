@@ -4,13 +4,18 @@ Meme Flappy Bird is a fun, fast-paced arcade game that mixes the classic flappy-
 
 Play the classic Flappy Bird gameplay with hilarious Indian meme characters and city-themed backgrounds! 🤣
 
+**LINK: https://meme-flappy.onrender.com**
 ---
 
 ## 🗺️ Architecture Diagram
 
+<img width="1917" height="947" alt="Screenshot 2025-11-20 031846" src="https://github.com/user-attachments/assets/7a669df0-f3c8-42e6-8a48-dc2755b25f2c" />
 
-<img width="1839" height="1452" alt="Screenshot 2025-11-16 024610" src="https://github.com/user-attachments/assets/8a718115-30b1-4e31-a1bb-b9d9842ffe08" />
+---
 
+## mp4
+
+https://github.com/user-attachments/assets/93842ed9-4e4a-4708-9781-4808625c11a9
 
 ---
 ## ✨ Features
