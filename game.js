@@ -30,6 +30,8 @@ class Game{
     this.score=0;
     this.alive=false;
 
+    this.particles=[];
+
     this.pipeGap=Math.max(220, this.h*0.32);  
     this.pipeSpeed=4;
 
@@ -55,7 +57,7 @@ class Game{
   flap(){
     if(!this.alive) return;
     this.vy=this.lift;
-    // playJump();  <-- removed
+    this.emitParticles();
   }
 
   update(){
@@ -91,6 +93,15 @@ class Game{
       }
 
       if(p.x+p.w<-80) this.pipes.splice(i,1);
+    }
+
+    for(let i=this.particles.length-1;i>=0;i--){
+      const pr=this.particles[i];
+      pr.x+=pr.vx;
+      pr.y+=pr.vy;
+      pr.size*=0.96;
+      pr.alpha*=0.92;
+      if(pr.alpha<0.05 || pr.size<0.8) this.particles.splice(i,1);
     }
   }
 
@@ -132,26 +143,42 @@ class Game{
     if(this.onGameOver) this.onGameOver(this.score);
   }
 
+  emitParticles(){
+    for(let i=0;i<10;i++){
+      const a=0.8+Math.random()*0.2;
+      const s=3+Math.random()*3;
+      this.particles.push({
+        x:120,
+        y:this.y,
+        vx:-1.2 - Math.random()*0.8,
+        vy:(Math.random()*2-1)*1.2,
+        size:s,
+        alpha:a
+      });
+    }
+  }
+
   drawCharacter(){
     const ctx=this.ctx;
     const img=this.character._img;
     const size=60;
 
+    const angle=Math.max(-0.6, Math.min(0.6, this.vy*0.04));
+
     ctx.save();
+    ctx.translate(120, this.y);
+    ctx.rotate(angle);
     ctx.beginPath();
-    ctx.arc(120, this.y, size/2, 0, Math.PI*2);
+    ctx.arc(0, 0, size/2, 0, Math.PI*2);
     ctx.clip();
 
     if(img.complete){
       const iw=img.width, ih=img.height;
       let sx=0, sy=0, sw=iw, sh=ih;
-
       if(iw>ih){ sw=ih; sx=(iw-ih)/2; }
       else { sh=iw; sy=(ih-iw)/2; }
-
-      ctx.drawImage(img, sx,sy,sw,sh, 120-size/2, this.y-size/2, size, size);
+      ctx.drawImage(img, sx,sy,sw,sh, -size/2, -size/2, size, size);
     }
-
     ctx.restore();
 
     ctx.strokeStyle="#0005";
@@ -216,6 +243,16 @@ class Game{
 
       this.ctx.fillStyle = "rgba(0,0,0,0.35)";
       this.ctx.fillRect(0,0,this.w,this.h);
+    }
+
+    for(const pr of this.particles){
+      this.ctx.save();
+      this.ctx.globalAlpha=pr.alpha;
+      this.ctx.fillStyle="#ffffff";
+      this.ctx.beginPath();
+      this.ctx.arc(pr.x, pr.y, pr.size, 0, Math.PI*2);
+      this.ctx.fill();
+      this.ctx.restore();
     }
 
     for(const p of this.pipes){
