@@ -4,10 +4,26 @@
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Meme Flappy Bird</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <div id="ui">
+
+    <div id="dashboard" class="panel dashboard">
+      <div class="dash-bg"></div>
+      <div class="dash-content">
+        <img class="dash-logo" src="assets/ui/logo.png" alt="logo"/>
+        <div class="dash-title"><span class="emoji">♨️</span> Flappy bollywood <span class="emoji">🌶️</span></div>
+        <div class="dash-buttons">
+          <button id="dashPlay" class="dash-btn primary">Play</button>
+          <button id="dashShop" class="dash-btn">Shop</button>
+          <button id="dashChar" class="dash-btn">Character</button>
+          <button id="dashTheme" class="dash-btn">Themes</button>
+          <button id="dashMusic" class="dash-btn center">Music On</button>
+        </div>
+      </div>
+    </div>
 
     <div id="header">
       <img id="logo" src="assets/ui/logo.png" alt="logo"/>
@@ -16,10 +32,11 @@
       <!-- ⭐ HIGH SCORE ADDED -->
       <div id="highScore" style="
           color:white;
-          font-size:20px;
-          font-weight:700;
+          font-size:22px;
+          font-weight:900;
           margin-left:10px;
           text-shadow:0 0 8px rgba(0,0,0,.6);
+          letter-spacing:.02em;
       ">Best: 0</div>
     </div>
 
@@ -34,6 +51,7 @@
       <div class="shop-tabs">
         <button id="tabCharacters" class="shop-tab active">Characters</button>
         <button id="tabThemes" class="shop-tab">Themes</button>
+        <button id="tabMusic" class="shop-tab">Music</button>
       </div>
 
       <!-- ⭐ CHARACTERS GRID -->
@@ -41,6 +59,9 @@
 
       <!-- ⭐ THEMES GRID -->
       <div id="shopThemesGrid" class="grid hidden"></div>
+
+      <!-- ⭐ MUSIC GRID -->
+      <div id="shopMusicGrid" class="grid hidden"></div>
 
       <button id="closeShop">Close</button>
     </div>
@@ -69,16 +90,8 @@
       <div>Best Score: <span id="finalBestScore">0</span></div>
 
       <button id="retryBtn">Retry</button>
+      <button id="homeBtn" class="home-btn">Home</button>
     </div>
-
-    <!-- ⭐ NAVIGATION -->
-    <nav class="nav-bar">
-      <button id="navPlay" class="nav-btn">🎮<div class="nav-label">Play</div></button>
-      <button id="navShop" class="nav-btn">🛒<div class="nav-label">Shop</div></button>
-      <button id="navTheme" class="nav-btn">🎨<div class="nav-label">Theme</div></button>
-      <button id="navChar" class="nav-btn">😎<div class="nav-label">Character</div></button>
-      <button id="navMusic" class="nav-btn">🔊<div class="nav-label">Music</div></button>
-    </nav>
 
   </div>
 
