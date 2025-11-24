@@ -18,9 +18,11 @@ const closeShop = document.getElementById('closeShop');
 
 const shopCharactersGrid = document.getElementById('shopCharactersGrid');
 const shopThemesGrid = document.getElementById('shopThemesGrid');
+const shopMusicGrid = document.getElementById('shopMusicGrid');
 
 const tabCharacters = document.getElementById('tabCharacters');
 const tabThemes = document.getElementById('tabThemes');
+const tabMusic = document.getElementById('tabMusic');
 
 const coinsDisplay = document.getElementById('coinsDisplay');
 
@@ -36,13 +38,18 @@ const closeCharBtn = document.getElementById('closeCharBtn');
 const gameOverPanel = document.getElementById('gameOverPanel');
 const finalScore = document.getElementById('finalScore');
 const scoreEl = document.getElementById('score');
+const retryBtn = document.getElementById('retryBtn');
 
-/* NAV */
-const navPlay = document.getElementById('navPlay');
-const navShop = document.getElementById('navShop');
-const navTheme = document.getElementById('navTheme');
-const navChar = document.getElementById('navChar');
-const navMusic = document.getElementById('navMusic');
+/* DASHBOARD */
+const dashboard = document.getElementById('dashboard');
+const dashPlay = document.getElementById('dashPlay');
+const dashShop = document.getElementById('dashShop');
+const dashTheme = document.getElementById('dashTheme');
+const dashChar = document.getElementById('dashChar');
+const dashMusic = document.getElementById('dashMusic');
+const headerEl = document.getElementById('header');
+const homeBtn = document.getElementById('homeBtn');
+const homeBtnTop = document.getElementById('homeBtnTop');
 
 /* AUDIO */
 const musicToggleState = { on: true };
@@ -200,6 +207,64 @@ function refreshShopThemes() {
 }
 
 /* =====================================================
+      SHOP — MUSIC GRID
+===================================================== */
+function refreshShopMusic() {
+  shopMusicGrid.innerHTML = '';
+  coinsDisplay.textContent = 'Coins: ' + Shop.coins;
+
+  Object.values(MUSIC_TRACKS).forEach(track => {
+    const card = document.createElement('div');
+    card.className = 'skinCard';
+
+    const name = document.createElement('div');
+    name.textContent = track.name;
+
+    const price = document.createElement('div');
+    price.textContent = track.price === 0 ? 'Free' : `Price: ${track.price}`;
+
+    const badge = document.createElement('div');
+    badge.className = 'badge';
+
+    const key = 'MUSIC_' + track.id;
+    const isOwned = Shop.owned[key] || track.price === 0;
+
+    const btn = document.createElement('button');
+
+    if (isOwned) {
+      badge.textContent = 'OWNED';
+      badge.classList.add('owned');
+      btn.textContent = 'Use';
+      btn.onclick = () => {
+        localStorage.setItem('selectedMusic', track.id);
+        setBgMusic(track.id);
+        alert('Music Selected: ' + track.name);
+        shopPanel.classList.add('hidden');
+      };
+    } else {
+      badge.textContent = 'LOCKED';
+      badge.classList.add('locked');
+      btn.textContent = 'Buy';
+      btn.onclick = () => {
+        if (Shop.buy(key, track.price)) {
+          alert('Purchased music: ' + track.name);
+          refreshShopMusic();
+        } else {
+          alert('Not enough coins!');
+        }
+      };
+    }
+
+    card.appendChild(badge);
+    card.appendChild(name);
+    card.appendChild(price);
+    card.appendChild(btn);
+
+    shopMusicGrid.appendChild(card);
+  });
+}
+
+/* =====================================================
       SHOP TABS
 ===================================================== */
 tabCharacters.onclick = () => {
@@ -208,6 +273,7 @@ tabCharacters.onclick = () => {
 
   shopCharactersGrid.classList.remove("hidden");
   shopThemesGrid.classList.add("hidden");
+  shopMusicGrid.classList.add("hidden");
 
   refreshShopCharacters();
 };
@@ -218,12 +284,27 @@ tabThemes.onclick = () => {
 
   shopThemesGrid.classList.remove("hidden");
   shopCharactersGrid.classList.add("hidden");
+  shopMusicGrid.classList.add("hidden");
 
   refreshShopThemes();
 };
 
-navShop.addEventListener('click', () => {
+tabMusic.onclick = () => {
+  tabMusic.classList.add('active');
+  tabCharacters.classList.remove('active');
+  tabThemes.classList.remove('active');
+
+  shopMusicGrid.classList.remove('hidden');
+  shopCharactersGrid.classList.add('hidden');
+  shopThemesGrid.classList.add('hidden');
+
+  refreshShopMusic();
+};
+
+dashShop.addEventListener('click', () => {
   closeAllPanels();
+  dashboard.classList.add('hidden');
+  headerEl && headerEl.classList.add('hidden');
   tabCharacters.click();
   shopPanel.classList.remove('hidden');
 });
@@ -343,51 +424,60 @@ function resizeCanvas() {
 }
 window.addEventListener('resize', resizeCanvas);
 
-navPlay.addEventListener('click', async () => {
+dashPlay.addEventListener('click', async () => {
   closeAllPanels();
+  dashboard.classList.add('hidden');
+  dashboard.style.display = 'none';
+  headerEl && headerEl.classList.remove('hidden');
+  canvas.style.display = 'block';
   await goFullscreen();
 
-  const c = localStorage.getItem('selectedChar') || CHARACTERS[0].id;
+  let c = localStorage.getItem('selectedChar') || CHARACTERS[0].id;
   const t = localStorage.getItem('selectedTheme') || THEMES[0].id;
 
   if (!Shop.owned[c]) {
-    alert("Buy or select a free character.");
-    return;
+    const ownedIds = Object.keys(Shop.owned).filter(k => Shop.owned[k]);
+    c = ownedIds.includes(CHARACTERS[0].id) ? CHARACTERS[0].id : (ownedIds[0] || CHARACTERS[0].id);
+    localStorage.setItem('selectedChar', c);
   }
 
+  resizeCanvas();
   game.start(c, t);
   if (musicToggleState.on) playBg();
 
   loopUI();
 });
 
-navTheme.addEventListener('click', () => {
+dashTheme.addEventListener('click', () => {
   closeAllPanels();
+  dashboard.classList.add('hidden');
+  headerEl && headerEl.classList.add('hidden');
   populateThemePanel();
   themePanel.classList.remove('hidden');
 });
 
-navChar.addEventListener('click', () => {
+dashChar.addEventListener('click', () => {
   closeAllPanels();
+  dashboard.classList.add('hidden');
+  headerEl && headerEl.classList.add('hidden');
   populateCharPanel();
   charPanel.classList.remove('hidden');
 });
 
-navMusic.addEventListener('click', () => {
-  musicToggleState.on = !musicToggleState.on;
+function updateDashMusicLabel() {
+  dashMusic.textContent = musicToggleState.on ? 'Music On' : 'Music Off';
+}
 
-  if (musicToggleState.on) {
-    playBg();
-    navMusic.innerHTML = '🔊<div class="nav-label">Music</div>';
-  } else {
-    pauseBg();
-    navMusic.innerHTML = '🔈<div class="nav-label">Music</div>';
-  }
+
+dashMusic.addEventListener('click', () => {
+  musicToggleState.on = !musicToggleState.on;
+  if (musicToggleState.on) playBg(); else pauseBg();
+  updateDashMusicLabel();
 });
 
-closeShop.addEventListener('click', () => shopPanel.classList.add('hidden'));
-closeThemeBtn.addEventListener('click', () => themePanel.classList.add('hidden'));
-closeCharBtn.addEventListener('click', () => charPanel.classList.add('hidden'));
+closeShop.addEventListener('click', () => { shopPanel.classList.add('hidden'); dashboard.classList.remove('hidden'); dashboard.style.display='block'; });
+closeThemeBtn.addEventListener('click', () => { themePanel.classList.add('hidden'); dashboard.classList.remove('hidden'); dashboard.style.display='block'; });
+closeCharBtn.addEventListener('click', () => { charPanel.classList.add('hidden'); dashboard.classList.remove('hidden'); dashboard.style.display='block'; });
 
 retryBtn.addEventListener('click', async () => {
   closeAllPanels();
@@ -476,4 +566,22 @@ refreshShopCharacters();
 if (highScoreEl) highScoreEl.textContent = "Best: " + bestScore;
 if (finalBestScoreEl) finalBestScoreEl.textContent = bestScore; // ⭐ ADDED
 
+dashboard.classList.remove('hidden');
+dashboard.style.display = 'block';
+headerEl && headerEl.classList.add('hidden');
+updateDashMusicLabel();
+canvas.style.display = 'none';
+
 window.g = game;
+function returnToDashboard(){
+  pauseBg();
+  game.alive = false;
+  closeAllPanels();
+  dashboard.classList.remove('hidden');
+  dashboard.style.display = 'block';
+  headerEl && headerEl.classList.add('hidden');
+  canvas.style.display = 'none';
+}
+
+homeBtn.addEventListener('click', returnToDashboard);
+if (homeBtnTop) homeBtnTop.addEventListener('click', returnToDashboard);
